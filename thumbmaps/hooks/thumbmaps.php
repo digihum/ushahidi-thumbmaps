@@ -12,22 +12,40 @@ class thumbmaps { // CHANGE THIS FOR OTHER BLOCKS
 		// register block with core, this makes it available to users 
 		blocks::register($block);
 	}
-	public function block()
+	public function block($id = null)
 	{
-		// Load the reports block view
-		$content = new View('thumbmaps'); // CHANGE THIS IF YOU WANT A DIFFERENT VIEW
-		
-		// Get Reports
-		$content->incidents = ORM::factory('incident')
- 			->where('incident_active', '1')
- 			->limit('10')
- 			->orderby('incident_date', 'desc')
- 			->find_all();
+		if($id==null){
+			// Load the reports block view
+			$content = new View('thumbmaps'); // CHANGE THIS IF YOU WANT A DIFFERENT VIEW
 			
-		$content->settings = ORM::factory('thumbmaps_settings')
- 			->find_all();
+			// Get Reports
+			$content->incidents = ORM::factory('incident')
+				->where('incident_active', '1')
+				->limit('10')
+				->orderby('incident_date', 'desc')
+				->find_all();
+				
+			$content->settings = ORM::factory('thumbmaps_settings')
+				->find_all();
+			
+			echo $content;
+			
+		}else{
 		
-		echo $content;
+			// Load the reports block view
+			$content = new View('thumbmaps_url'); // CHANGE THIS IF YOU WANT A DIFFERENT VIEW
+			
+			// Get Reports
+			$content->incidents = ORM::factory('incident')
+				->where('id', $id)
+				->find_all();
+				
+			$content->settings = ORM::factory('thumbmaps_settings')
+				->find_all();
+			
+			echo $content;
+			
+		}
 	}
 }
 new thumbmaps;
